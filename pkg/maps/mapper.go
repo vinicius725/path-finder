@@ -51,9 +51,11 @@ func (e *MapError) Error() string {
 func (e terrain) Height() int {
 	return len(e)
 }
+
 func (e terrain) Width() int {
 	return len(e[0])
 }
+
 func (e terrain) Tile(p Position) uint {
 	return e[p.Y][p.X]
 }

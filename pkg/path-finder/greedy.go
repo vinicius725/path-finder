@@ -87,31 +87,22 @@ func (f *PathFinder) Neightbours(p Visit) (vs []Visit) {
 	for x := p.pos.X - 1; x < p.pos.X+2; x++ {
 		for y := p.pos.Y - 1; y < p.pos.Y+2; y++ {
 			pos := maps.Position{X: x, Y: y}
-			if pos == p.pos {
-				continue
-			}
-			if f.Validate(pos) {
-				vs = append(vs, Visit{
-					src:   &p,
-					pos:   pos,
-					price: f.GetPrice(pos),
-				})
+			if p.pos != pos && f.Validate(pos) {
+				vs = append(
+					vs, Visit{
+						src:   &p,
+						pos:   pos,
+						price: f.GetPrice(pos),
+					},
+				)
 			}
 		}
 	}
 	return
 }
 func (f *PathFinder) Validate(p maps.Position) (r bool) {
-	if p.X >= 0 {
-		if p.X < f.terrain.Width() {
-			if p.Y >= 0 {
-				if p.Y < f.terrain.Height() {
-					if f.terrain.Tile(p) == 0 {
-						r = true
-					}
-				}
-			}
-		}
+	if p.X >= 0 && p.X < f.terrain.Width() && p.Y >= 0 && p.Y < f.terrain.Height() && f.terrain.Tile(p) == 0 {
+		r = true
 	}
 	return
 }

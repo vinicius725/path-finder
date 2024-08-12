@@ -4,14 +4,13 @@ import (
 	"fmt"
 
 	"github.com/fatih/color"
-	maps2 "github.com/vinicius725/path-finder/internal/maps"
+	"github.com/vinicius725/path-finder/internal/levels"
 	"github.com/vinicius725/path-finder/pkg/maps"
 	pathfinder "github.com/vinicius725/path-finder/pkg/path-finder"
 )
 
 func main() {
-	m, err := maps2.Generate(50, 50, 20)
-	// m, err := maps2.Generate2()
+	m, err := levels.Generate(50, 50, 20)
 	if err != nil {
 		panic(err)
 	}
