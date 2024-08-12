@@ -64,5 +64,4 @@ func main() {
 		fmt.Print("\n")
 	}
 
-	_ = path
 }
