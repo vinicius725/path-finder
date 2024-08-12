@@ -47,8 +47,8 @@ func main() {
 	for _, pos := range path {
 		tiles[pos] = '.'
 	}
-	tiles[path[0]] = 'O'
-	tiles[path[len(path)-1]] = 'X'
+	tiles[start] = 'O'
+	tiles[end] = 'X'
 	for y, row := range m.Tiles() {
 		for x, tile := range row {
 			if v, ok := tiles[maps.Position{X: x, Y: y}]; ok {
