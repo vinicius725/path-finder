@@ -2,6 +2,7 @@ package pathfinder
 
 import (
 	"math"
+	"slices"
 
 	"github.com/vinicius725/path-finder/pkg/maps"
 )
@@ -9,7 +10,7 @@ import (
 type PathFinder struct {
 	src       maps.Position
 	dest      maps.Position
-	avaliable map[Visit]any
+	avaliable map[maps.Position]Visit
 	stepedOn  map[maps.Position]any
 	terrain   maps.Map
 }
@@ -25,7 +26,7 @@ func New(t maps.Map, src, dest maps.Position) *PathFinder {
 		dest:      dest,
 		terrain:   t,
 		stepedOn:  make(map[maps.Position]any),
-		avaliable: make(map[Visit]any),
+		avaliable: make(map[maps.Position]Visit),
 	}
 }
 
@@ -36,6 +37,7 @@ func (v Visit) Track() (track []maps.Position) {
 		track = append(track, prev.pos)
 	}
 	track = append(track, prev.pos)
+	slices.Reverse(track)
 	return
 }
 
@@ -56,10 +58,11 @@ func (f *PathFinder) Find() ([]maps.Position, error) {
 }
 
 func (f *PathFinder) Choose() (v Visit) {
-	for a := range f.avaliable {
+	for _, a := range f.avaliable {
 		v = a
+		break
 	}
-	for a := range f.avaliable {
+	for _, a := range f.avaliable {
 		if a.price < v.price {
 			v = a
 		}
@@ -67,7 +70,7 @@ func (f *PathFinder) Choose() (v Visit) {
 			v = a
 		}
 	}
-	delete(f.avaliable, v)
+	delete(f.avaliable, v.pos)
 	f.stepedOn[v.pos] = nil
 	return
 }
@@ -75,7 +78,7 @@ func (f *PathFinder) Choose() (v Visit) {
 func (f *PathFinder) Store(v []Visit) {
 	for _, o := range v {
 		if _, ok := f.stepedOn[o.pos]; !ok {
-			f.avaliable[o] = nil
+			f.avaliable[o.pos] = o
 		}
 	}
 }
