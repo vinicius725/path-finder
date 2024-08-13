@@ -88,13 +88,12 @@ func (f *PathFinder) Neightbours(p Visit) (vs []Visit) {
 		for y := p.pos.Y - 1; y < p.pos.Y+2; y++ {
 			pos := maps.Position{X: x, Y: y}
 			if p.pos != pos && f.Validate(pos) {
-				vs = append(
-					vs, Visit{
-						src:   &p,
-						pos:   pos,
-						price: f.GetPrice(pos),
-					},
-				)
+				newVisit := Visit{
+					src: &p,
+					pos: pos,
+				}
+				newVisit.price = f.GetPrice(newVisit)
+				vs = append(vs, newVisit)
 			}
 		}
 	}
@@ -106,9 +105,9 @@ func (f *PathFinder) Validate(p maps.Position) (r bool) {
 	}
 	return
 }
-func (f *PathFinder) GetPrice(p maps.Position) int {
-	done := f.Distance(f.src, p)
-	left := f.Distance(p, f.dest)
+func (f *PathFinder) GetPrice(src Visit) int {
+	done := len(src.Track())
+	left := f.Distance(src.pos, f.dest)
 	return left - done
 }
 
