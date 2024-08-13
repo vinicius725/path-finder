@@ -77,6 +77,9 @@ func (f *PathFinder) Choose() (v Visit) {
 
 func (f *PathFinder) Store(v []Visit) {
 	for _, o := range v {
+		if _, ok := f.avaliable[o.pos]; ok {
+			continue
+		}
 		if _, ok := f.stepedOn[o.pos]; !ok {
 			f.avaliable[o.pos] = o
 		}
